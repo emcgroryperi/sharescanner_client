@@ -8,10 +8,14 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "apexcharts": "^3.35.3",
     "axios": "^0.27.2",
     "core-js": "^3.8.3",
     "moment": "^2.29.3",
+    "technicalindicators": "^3.1.0",
     "vue": "^3.2.13",
+    "vue-tradingview-widgets": "^1.1.2",
+    "vue3-apexcharts": "^1.4.1",
     "vuestic-ui": "^1.4.4"
   },
   "devDependencies": {
