@@ -3,18 +3,18 @@
     <br />
     <br />
     <br />
-    <div id="synced-charts">
+    <div id="synced-charts" style="background-color: white;">
       <apexchart
         id="candle"
         type="candlestick"
-        height="400"
+        height="360"
         :options="chartOptions"
         :series="series"
       ></apexchart>
       <apexchart
         id="bar"
         type="bar"
-        height="160"
+        height="120"
         :options="chartOptionsBar"
         :series="seriesBar"
       ></apexchart>
@@ -38,40 +38,34 @@ export default {
 
   data() {
     return {
-      series: [
-        {
-          name: "candle",
-          data: this.companyData,
-        },
-      ],
+      series: this.companyData,
       chartOptions: {
         chart: {
           height: 290,
-          type: "candlestick",
           group: "social",
+          type: 'line',
           id: "chart",
         },
         title: {
-          text: "CandleStick Chart - Category X-axis",
+          text: "CandleStick Chart",
           align: "left",
         },
-        tooltip: {
-          enabled: true,
-        },
+        colors: ['#2E93fA', '#66DA26', '#546E7A'],
         xaxis: {
-          tooltip: {
-            enabled: true,
-          },
           type: "datetime",
           labels: {
+            show: true,
             formatter: function (val) {
               return moment(val).format("DD/MM/YYYY");
             },
-          },
+          },         
         },
         yaxis: {
-          tooltip: {
-            enabled: true,
+          labels: {
+            show: true,
+            formatter: function (val) {
+              return val.toFixed(2);
+            },
           },
         },
       },
@@ -114,9 +108,6 @@ export default {
           width: 0,
         },
         xaxis: {
-          tooltip: {
-            enabled: true,
-          },
           type: "datetime",
           labels: {
             formatter: function (val) {
@@ -126,7 +117,7 @@ export default {
         },
         yaxis: {
           labels: {
-            show: false,
+            show: true,
           },
         },
       },

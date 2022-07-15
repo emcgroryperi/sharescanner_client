@@ -1,41 +1,56 @@
 <template>
-<div class="parent">
-  <h1>Share Scanner</h1>
-  <share-viewer></share-viewer>
-</div>
+  <div id="app" class="parent">
+    <div class="header">
+      <h1 class="website-title">SHARE SCANNER</h1>
+    </div>
+    <!-- <div class="main">
+      <share-viewer></share-viewer>
+    </div> -->
+    <!-- <router-view></router-view> -->
+  </div>
 </template>
 
 <script>
-
-import ShareViewer from './components/Viewer/ShareViewer';
+// import ShareViewer from "./components/Viewer/ShareViewer";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    ShareViewer
-  }
-}
+    // ShareViewer,
+  },
+};
 </script>
 
 <style>
-
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  height: 100vh;
+  /* height: 100vh; */
+  background-color: #4d5057;
+}
+
+.website-title {
+  font-size: 2em;
+  color: #CFCFCF; 
+  position: relative;
+  padding: 2%;
 }
 
 .parent {
-  background-color: green;
-  height: 100%;
-  width: 100%;
+  height: 100vh;
+  width: 100wh;
 }
 
-h1 {
-  font-size: larger;
+.header {
+  background-color: #4E6E5D;
+  height: 10%;
+}
+
+.main {
+  /* background-color: #4d5057; */
+  height: 90%;
 }
 
 </style>

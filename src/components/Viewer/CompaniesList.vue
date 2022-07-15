@@ -27,7 +27,6 @@
 import {HTTP} from '../../http-common';
 
 import {VaSidebar, VaSidebarItem, VaSidebarItemTitle, VaSidebarItemContent} from 'vuestic-ui';
-
 export default {
 
     components: {
@@ -75,9 +74,9 @@ export default {
 <style scoped>
 
 .company-list {
-    height: 80vh;
-    margin: 0;
+    height: 90vh;
     position: relative;
+    /* padding-left: 20px; */
 }
 
 </style>
