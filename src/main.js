@@ -27,19 +27,19 @@ app.use(createVuestic({
 
 import ShareViewer from "./components/Viewer/ShareViewer";
 
-const Home = { template: '<div>Home</div>' }
+const Home = { template: "<div>Home</div>" }
 
 const routes = [
-  { path: '/', component: Home },
+  { path: '', component: Home },
   { path: '/viewer', component: ShareViewer },
 ]
 
 
-import VueRouter from 'vue-router';
+import {createRouter, createWebHashHistory} from 'vue-router';
 
-const router = VueRouter.createRouter({
-  history: VueRouter.createWebHashHistory(),
-  routes, // short for `routes: routes`
+const router = createRouter({
+  history: createWebHashHistory(),
+  routes: routes, // short for `routes: routes`
 })
 
 app.use(router)

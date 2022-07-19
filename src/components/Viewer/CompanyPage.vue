@@ -77,8 +77,8 @@ export default {
             type: "candlestick",
             data: this.formatData,
           });
-          this.getEMA(5);
           this.getEMA(10);
+          this.getEMA(50);
         })
         .catch((e) => {
           this.errors.push(e);

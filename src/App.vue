@@ -2,11 +2,12 @@
   <div id="app" class="parent">
     <div class="header">
       <h1 class="website-title">SHARE SCANNER</h1>
+      <div id="nav">
+        <router-link to="/">Home</router-link> |
+        <router-link to="/viewer">Viewer</router-link>
+      </div>
     </div>
-    <!-- <div class="main">
-      <share-viewer></share-viewer>
-    </div> -->
-    <!-- <router-view></router-view> -->
+    <router-view></router-view>
   </div>
 </template>
 
@@ -33,9 +34,10 @@ export default {
 
 .website-title {
   font-size: 2em;
-  color: #CFCFCF; 
+  color: #cfcfcf;
   position: relative;
-  padding: 2%;
+  padding-top: 2%;
+  padding-bottom: 0.5%;
 }
 
 .parent {
@@ -44,7 +46,7 @@ export default {
 }
 
 .header {
-  background-color: #4E6E5D;
+  background-color: #4e6e5d;
   height: 10%;
 }
 
@@ -52,5 +54,4 @@ export default {
   /* background-color: #4d5057; */
   height: 90%;
 }
-
 </style>
