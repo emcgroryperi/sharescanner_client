@@ -26,12 +26,14 @@ app.use(createVuestic({
   }))
 
 import ShareViewer from "./components/Viewer/ShareViewer";
+import ShareAnalysis from "./components/Analysis/ShareAnalysis";
 
 const Home = { template: "<div>Home</div>" }
 
 const routes = [
   { path: '', component: Home },
   { path: '/viewer', component: ShareViewer },
+  { path: '/analysis', component: ShareAnalysis },
 ]
 
 

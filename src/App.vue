@@ -4,7 +4,8 @@
       <h1 class="website-title">SHARE SCANNER</h1>
       <div id="nav">
         <router-link to="/">Home</router-link> |
-        <router-link to="/viewer">Viewer</router-link>
+        <router-link to="/viewer">Viewer</router-link> |
+        <router-link to="/analysis">Analysis</router-link>
       </div>
     </div>
     <router-view></router-view>
@@ -52,6 +53,6 @@ export default {
 
 .main {
   /* background-color: #4d5057; */
-  height: 90%;
+  height: 100%;
 }
 </style>
