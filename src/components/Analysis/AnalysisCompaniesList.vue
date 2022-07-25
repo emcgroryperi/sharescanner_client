@@ -76,8 +76,7 @@ export default {
 <style scoped>
 
 .company-list {
-    min-height: 45vh;
-    max-height: 90vh;
+    height: 85vh;
     
     position: relative;
     /* padding-left: 20px; */
