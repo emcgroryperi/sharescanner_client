@@ -13,6 +13,7 @@
 </template>
 
 <script>
+
 import AnalysisCompaniesList from "./AnalysisCompaniesList";
 import CompanyPage from "../Viewer/CompanyPage";
 

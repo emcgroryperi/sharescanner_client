@@ -7,7 +7,7 @@
     </div>
     <div class="row">
       <div class="flex md12">
-         <AnalysisResultsPage>  </AnalysisResultsPage> 
+         <AnalysisResultsPage>  </AnalysisResultsPage> <!--  v-if="filtersChosen!=''"" -->
       </div>
     </div>
   </div>

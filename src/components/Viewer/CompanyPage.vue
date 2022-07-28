@@ -79,6 +79,7 @@ export default {
           });
           this.getEMA(10);
           this.getEMA(50);
+          this.getBBands(20,2);
         })
         .catch((e) => {
           this.errors.push(e);
@@ -112,6 +113,31 @@ export default {
       }
       this.plots.push({ name: "EMA " + period, type: "line", data: newData });
     },
+    getBBands(period, std) {
+      const BBands = require("technicalindicators").BollingerBands;
+      const formatted = this.formatData;
+      const vals = formatted.map((value) => value.y[3]);
+      const data = BBands.calculate({ period: period, values: vals, stdDev: std });
+      const upper = [];
+      for (let i = vals.length - data.length; i < vals.length; i++) {
+        upper.push({
+          x: moment(this.ochlv[i].date, "YYYY-MM-DD").toDate(),
+          y: data[data.length - vals.length + i]['upper'],
+        });
+      }
+
+      const lower = [];
+      for (let i = vals.length - data.length; i < vals.length; i++) {
+        lower.push({
+          x: moment(this.ochlv[i].date, "YYYY-MM-DD").toDate(),
+          y: data[data.length - vals.length + i]['lower'],
+        });
+      }
+
+
+      this.plots.push({ name: "Lower BBand " + period, type: "line", data: lower });
+      this.plots.push({ name: "Upper BBand " + period, type: "line", data: upper });
+    }
   },
 
   computed: {
@@ -140,8 +166,6 @@ export default {
       }
       console.log(this.ochlv[0].date);
       console.log(Date.parse(newData[0].x));
-      // console.log(newData);
-
       return newData;
     },
     getVolume() {
