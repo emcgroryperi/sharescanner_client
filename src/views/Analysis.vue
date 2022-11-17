@@ -1,7 +1,9 @@
 <template>
   <div class="container-fluid py-4">
     <div class="row">
-      <filter-card></filter-card>
+      <filter-card 
+        @filter-complete="(crossovers) => selectCompanies(crossovers)"
+        @filter-cleared="this.filtered=false"></filter-card>
     </div>
 
     <div class="row" v-if="filtered">
@@ -30,6 +32,7 @@ export default {
       name: "companies",
       api_loaded: false,
       companies: [],
+      data: [],
       activeSymbol: "",
       last_updated: "Loading...",
       filtered: false,
@@ -65,6 +68,19 @@ export default {
       this.activeSymbol = symbol;
       console.log(this.activeSymbol);
     },
+    selectCompanies(crossovers) {
+      console.log(crossovers)
+      this.data = crossovers
+      let temp = []
+      for (let i=0; i<crossovers.length; i++) {
+        console.log(crossovers[i])
+        temp.push({'symbol': crossovers[i][0]})
+      }
+      console.log(temp)
+      this.companies = temp
+
+      this.filtered = true
+    }
   },
 };
 </script>

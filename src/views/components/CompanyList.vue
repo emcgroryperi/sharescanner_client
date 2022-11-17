@@ -38,7 +38,7 @@ export default {
     return {
       name: "companies",
       api_loaded: false,
-      //   companies: [],
+      // companies: [],
       activeSymbol: "",
       last_updated: "Loading...",
     };

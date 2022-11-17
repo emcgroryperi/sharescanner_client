@@ -25,6 +25,7 @@ export default {
       const obj = {
         key: `volume`,
         filter: "Volume Peaks",
+        label: "Volume Peaks",
       };
       console.log(obj);
       this.$emit("new-filter", obj);

@@ -33,13 +33,13 @@
             class="mb-0 text-sm"
             style="text-align: center;"
           >No Filters Added</p>
-          <div class="table-responsive p-0 mytable mb-4">
+          <div class="table-responsive p-0 mytable mb-4" v-if="current_filters.length!=0">
             <table class="table align-items-center mb-0">
               <tbody>
                 <ul class="navbar-nav filtered">
-                  <div v-for="filter in current_filters" :key="filter.id">{{filter.filter}}</div>
+                  <div v-for="filter in current_filters" :key="filter.id">{{filter.label}}</div>
                   <material-button
-                    v-if="current_filters.length!=0"
+                    
                     color="success"
                     :fullWidth="true"
                     @click="clearFilters"
@@ -71,6 +71,7 @@ export default {
   data() {
     return {
       current_filters: [],
+      crossovers: []
     };
   },
   components: {
@@ -89,26 +90,26 @@ export default {
     },
     clearFilters() {
       this.current_filters = [];
+      this.$emit('filter-cleared')
     },
     applyFilters() {
       console.log("requesting");
       HTTP.get('get_csrf_token')
         .then((response) => {
-            console.log(response.data)
             return response.data.token
         }).then(token => {
-            console.log(token)
-            HTTP.post("scan_market/", {key: "EMA_10_20"}, {headers: {'X-CSRFToken': token, 'useCredentials': true}})
+            HTTP.post("scan_market/", {indicators: this.current_filters}, {headers: {'X-CSRFToken': token}})
             .then((response) => {
+            console.log(response)
             console.log("Companies retrieved");
-            console.log(response.data);
             return JSON.parse(response.data);
-            })})
-        // .then((data) => {
-        //   this.crossovers = data.data;
-        //   console.log(data.data);
-        //   console.log(this.crossovers);
-        // });
+            })
+            .then((data) => {
+            this.crossovers = data.data;
+            console.log(this.crossovers);
+            this.$emit('filter-complete', this.crossovers)
+          })})
+          ;
     },
   },
 };

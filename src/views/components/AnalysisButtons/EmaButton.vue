@@ -56,7 +56,8 @@ export default {
     addFilter() {
       const obj = {
         key: `EMA_${this.short}_${this.long}`,
-        filter: `EMA_${this.short}_${this.long}`,
+        filter: `EMA crossover`,
+        label: `EMA_${this.short}_${this.long}`,
         short_ema: this.short,
         long_ema: this.long,
       };
