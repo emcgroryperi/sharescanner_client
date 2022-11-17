@@ -1,58 +1,84 @@
-<template>
-  <div id="app" class="parent">
-    <div class="header">
-      <h1 class="website-title">SHARE SCANNER</h1>
-      <div id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/viewer">Viewer</router-link> |
-        <router-link to="/analysis">Analysis</router-link>
-      </div>
-    </div>
-    <router-view></router-view>
-  </div>
-</template>
+<!--
+=========================================================
+* Vue Material Dashboard 2 - v3.0.0
+=========================================================
 
+* Product Page: https://creative-tim.com/product/vue-material-dashboard-2
+* Copyright 2022 Creative Tim (https://www.creative-tim.com)
+
+Coded by www.creative-tim.com
+
+ =========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+-->
+<template>
+<div>
+  <sidenav
+    :custom_class="color"
+    :class="[isRTL ? 'fixed-end' : 'fixed-start']"
+    v-if="showSidenav"
+  />
+  <main
+    class="main-content position-relative max-height-vh-100 h-100 overflow-x-hidden"
+  >
+    <!-- nav -->
+    <navbar
+      :class="[isNavFixed ? navbarFixed : '', isAbsolute ? absolute : '']"
+      :color="isAbsolute ? 'text-white opacity-8' : ''"
+      :minNav="navbarMinimize"
+      v-if="showNavbar"
+    />
+    <router-view />
+    <app-footer v-show="showFooter" />
+    <configurator
+      :toggle="toggleConfigurator"
+      :class="[showConfig ? 'show' : '', hideConfigButton ? 'd-none' : '']"
+    />
+  </main>
+</div>
+</template>
 <script>
-// import ShareViewer from "./components/Viewer/ShareViewer";
+import Sidenav from "./examples/Sidenav";
+import Configurator from "@/examples/Configurator.vue";
+import Navbar from "@/examples/Navbars/Navbar.vue";
+import AppFooter from "@/examples/Footer.vue";
+import { mapMutations, mapState } from "vuex";
 
 export default {
   name: "App",
   components: {
-    // ShareViewer,
+    Sidenav,
+    Configurator,
+    Navbar,
+    AppFooter
   },
+  methods: {
+    ...mapMutations(["toggleConfigurator", "navbarMinimize"])
+  },
+  computed: {
+    ...mapState([
+      "isRTL",
+      "color",
+      "isAbsolute",
+      "isNavFixed",
+      "navbarFixed",
+      "absolute",
+      "showSidenav",
+      "showNavbar",
+      "showFooter",
+      "showConfig",
+      "hideConfigButton"
+    ])
+  },
+  beforeMount() {
+    this.$store.state.isTransparent = "bg-transparent";
+
+    const sidenav = document.getElementsByClassName("g-sidenav-show")[0];
+
+    if (window.innerWidth > 1200) {
+      sidenav.classList.add("g-sidenav-pinned");
+    }
+  }
 };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  /* height: 100vh; */
-  background-color: #4d5057;
-}
-
-.website-title {
-  font-size: 2em;
-  color: #cfcfcf;
-  position: relative;
-  padding-top: 2%;
-  padding-bottom: 0.5%;
-}
-
-.parent {
-  height: 100vh;
-  width: 100wh;
-}
-
-.header {
-  background-color: #4e6e5d;
-  height: 10%;
-}
-
-.main {
-  /* background-color: #4d5057; */
-  height: 100%;
-}
-</style>
