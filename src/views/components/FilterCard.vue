@@ -1,5 +1,6 @@
 <template>
   <div class="row">
+    <loading :active="loading" :is-full-page="true"></loading>
     <div class="col-8">
       <div class="card my-4">
         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -57,6 +58,9 @@
         </div>
       </div>
     </div>
+    <div class="is-loading-bar has-text-centered" v-bind:class="{'is-loading': loading}">
+      <div class="lds-dual-ring"></div>
+    </div>
   </div>
 </template>
 
@@ -66,18 +70,22 @@ import VolumeButton from "@/views/components/AnalysisButtons/VolumeButton";
 import EmaButton from "@/views/components/AnalysisButtons/EmaButton";
 // import BollingerButton from '@/views/components/AnalysisButtons/BollingerButton';
 import {HTTP} from '../../http-common.js';
+import Loading from 'vue3-loading-overlay';
+import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
 
 export default {
   data() {
     return {
       current_filters: [],
-      crossovers: []
+      crossovers: [],
+      loading: false,
     };
   },
   components: {
     MaterialButton,
     VolumeButton,
     EmaButton,
+    Loading,
     // BollingerButton
   },
 
@@ -96,7 +104,9 @@ export default {
     },
     applyFilters() {
       console.log("requesting");
-      HTTP.get('get_csrf_token')
+      this.$emit('filter-cleared')
+      this.loading=true
+      HTTP.get('get_csrf_token/')
         .then((response) => {
             return response.data.token
         }).then(token => {
@@ -109,6 +119,7 @@ export default {
             .then((data) => {
             this.crossovers = data.data;
             console.log(this.crossovers);
+            this.loading=false
             this.$emit('filter-complete', this.crossovers, this.current_filters)
           })})
           ;
@@ -134,4 +145,44 @@ export default {
 .newfilter {
   padding-top: 10px;
 }
+
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px;
+  border-color: #ccc transparent #ccc transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.is-loading-bar {
+  height: 0;
+  overflow: hidden;
+  
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+
+  &.is-loading {
+    height: 80px;
+  }
+  
+}
+
 </style>

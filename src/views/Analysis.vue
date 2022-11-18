@@ -18,7 +18,7 @@
           v-if="activeSymbol != ''" :symbol="activeSymbol"
           :filters="this.filters">
           <div style="padding: 10px; text-align: center;">
-            They Done Fucked Up
+            They Done Goofed Up
           </div>
         </company-details>
       </div>
@@ -27,8 +27,6 @@
 </template>
 
 <script>
-import { HTTP } from "../http-common";
-import moment from "moment";
 import CompanyDetails from "@/views/components/CompanyDetails";
 import CompanyList from "@/views/components/CompanyList";
 import FilterCard from '@/views/components/FilterCard';
@@ -52,21 +50,6 @@ export default {
     FilterCard,
   },
 
-  created() {
-    HTTP.get("companies").then((response) => {
-      console.log("Companies retrieved");
-      this.companies = response.data;
-      this.companies.sort((a, b) => {
-        if (a.symbol > b.symbol) return 1;
-        if (b.symbol > a.symbol) return -1;
-        return 0;
-      });
-      this.api_loaded = true;
-      this.last_updated = moment(this.companies[0].last_updated).format(
-        "ddd, ll"
-      );
-    });
-  },
 
   methods: {
     updateSelection(symbol) {
