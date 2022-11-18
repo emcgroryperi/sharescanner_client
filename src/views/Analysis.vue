@@ -2,18 +2,25 @@
   <div class="container-fluid py-4">
     <div class="row">
       <filter-card 
-        @filter-complete="(crossovers) => selectCompanies(crossovers)"
-        @filter-cleared="this.filtered=false"></filter-card>
+        @filter-complete="(crossovers, filters) => selectCompanies(crossovers, filters)"
+        @filter-cleared="this.filtered=false; this.activeSymbol=''"></filter-card>
     </div>
 
     <div class="row" v-if="filtered">
       <div class="col-3">
         <company-list 
         :companies="companies"
+        :last_updated="last_updated"
         @active-symbol="(symbol) => updateSelection(symbol)"></company-list>
       </div>
       <div class="col-9">
-        <company-details v-if="activeSymbol != ''" :symbol="activeSymbol"></company-details>
+        <company-details 
+          v-if="activeSymbol != ''" :symbol="activeSymbol"
+          :filters="this.filters">
+          <div style="padding: 10px; text-align: center;">
+            They Done Fucked Up
+          </div>
+        </company-details>
       </div>
     </div>
   </div>
@@ -36,6 +43,7 @@ export default {
       activeSymbol: "",
       last_updated: "Loading...",
       filtered: false,
+      filters: {},
     };
   },
   components: {
@@ -57,9 +65,6 @@ export default {
       this.last_updated = moment(this.companies[0].last_updated).format(
         "ddd, ll"
       );
-      console.log(
-        moment(this.companies[0].last_updated, "YYYY-MM-DD").toDate()
-      );
     });
   },
 
@@ -68,17 +73,14 @@ export default {
       this.activeSymbol = symbol;
       console.log(this.activeSymbol);
     },
-    selectCompanies(crossovers) {
-      console.log(crossovers)
+    selectCompanies(crossovers, filters) {
       this.data = crossovers
       let temp = []
       for (let i=0; i<crossovers.length; i++) {
-        console.log(crossovers[i])
-        temp.push({'symbol': crossovers[i][0]})
+        temp.push({'symbol': crossovers[i][0], 'filter_type': crossovers[i][5], date:crossovers[i][1]})
       }
-      console.log(temp)
       this.companies = temp
-
+      this.filters = filters
       this.filtered = true
     }
   },
@@ -89,6 +91,8 @@ export default {
 .active {
   color: red;
 }
+
+
 
 .mytable {
   overflow: auto;

@@ -25,6 +25,7 @@
     "chart.js": "3.6.0",
     "core-js": "3.6.5",
     "moment": "^2.29.4",
+    "technicalindicators": "^3.1.0",
     "vue": "3.2.0",
     "vue-router": "4.0.14",
     "vue3-apexcharts": "^1.4.1",

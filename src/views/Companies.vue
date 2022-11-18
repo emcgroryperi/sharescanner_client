@@ -2,7 +2,13 @@
   <div class="container-fluid py-4">
     <div class="row">
       <div class="col-3">
-        <company-list :companies="companies" @active-symbol="(symbol) => updateSelection(symbol)"></company-list>
+        <company-list
+          :companies="companies"
+          @active-symbol="(symbol) => updateSelection(symbol)"
+          :last_updated="last_updated"
+        ></company-list>
+        <material-button color="success" :fullWidth="true"
+        @click="updateCompanies">Update Data (Be sparing)</material-button>
       </div>
       <div class="col-9">
         <company-details v-if="activeSymbol != ''" :symbol="activeSymbol"></company-details>
@@ -12,6 +18,7 @@
 </template>
 
 <script>
+import MaterialButton from "@/components/MaterialButton";
 import { HTTP } from "../http-common";
 import moment from "moment";
 import CompanyDetails from "@/views/components/CompanyDetails";
@@ -28,6 +35,7 @@ export default {
     };
   },
   components: {
+    MaterialButton,
     CompanyDetails,
     CompanyList,
   },
@@ -56,6 +64,11 @@ export default {
       this.activeSymbol = symbol;
       console.log(this.activeSymbol);
     },
+    updateCompanies() {
+      console.log('updating')
+      HTTP.get("update_companies")
+      .then(console.log('Finished Updating'))
+    }
   },
 };
 </script>

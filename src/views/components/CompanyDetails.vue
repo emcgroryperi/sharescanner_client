@@ -5,12 +5,14 @@
         <h6 class="text-white text-capitalize ps-3">{{ name }} ({{ formatSymbol }})</h6>
       </div>
     </div>
-    <br/>
+    <slot></slot>
+    <br />
     <candlestick-chart
-        v-if="render"
-        :key="symbol"
-        :companyData="plots">
-    </candlestick-chart>
+      v-if="render"
+      :key="symbol"
+      :companyData="plots"
+      :companyVolume="this.getVolume"
+    ></candlestick-chart>
     <div class="card-body px-0 pb-2">
       <p class="mb-0 text-sm" style="text-align: center;">Updated: {{ last_updated }}</p>
     </div>
@@ -20,12 +22,14 @@
 <script>
 import { HTTP } from "../../http-common";
 import moment from "moment";
-import CandlestickChart from '@/views/components/CandlestickChart'
+import CandlestickChart from "@/views/components/CandlestickChart";
+import { get_SMA, get_BBands, get_EMA } from "@/views/../analysis.js";
 
 export default {
   name: "ChartHolderCard",
   props: {
     symbol: { required: true, type: String },
+    filters: Object,
   },
   components: {
     CandlestickChart,
@@ -43,7 +47,7 @@ export default {
     };
   },
 
- // Fetches companies when created
+  // Fetches companies when created
   mounted() {
     this.getData();
   },
@@ -56,31 +60,57 @@ export default {
         .then((response) => {
           this.name = response.data.company.name;
           this.market_cap = response.data.company.market_cap;
-          this.last_updated = moment(response.data.company.last_updated).format("ddd, ll");
+          this.last_updated = moment(response.data.company.last_updated).format(
+            "ddd, ll"
+          );
           this.exchange = response.data.company.exchange;
           this.ochlv = response.data.data;
           this.render = true;
-          this.plots = []
+          this.plots = [];
           this.plots.push({
             name: "candle",
             type: "candlestick",
             data: this.formatData,
           });
-          console.log('Data retrieved')
+          console.log("Data retrieved");
+
+          if (this.filters && this.filters.length != 0) {
+            console.log(this.filters);
+            for (const filter of this.filters) {
+              if (filter.filter == "EMA crossover") {
+                this.getEMA(filter.short_ema);
+                this.getEMA(filter.long_ema);
+              }
+            }
+          }
+          this.getBBands(20, 2);
         })
         .catch((e) => {
+          console.log(e);
           this.errors.push(e);
         });
-    }
+    },
+    getSMA(period) {
+      get_SMA(this.formatData, period);
+      // this.plots.push(get_SMA(this.formatData, period));
+      // this.plots.push(get_SMA(this.formatData, 50));
+    },
+    getEMA(period) {
+      this.plots.push(get_EMA(this.formatData, period));
+    },
+    getBBands(period, std) {
+      this.plots.push(get_BBands(this.formatData, period, std).upper);
+      this.plots.push(get_BBands(this.formatData, period, std).lower);
+    },
   },
 
- watch: {
+  watch: {
     symbol: function () {
       this.getData();
     },
   },
 
- computed: {
+  computed: {
     latestDate() {
       var dt = moment(String(this.last_updated)).format("DD/MM/YYYY");
       if (dt != "Invalid Date") return dt;
@@ -107,20 +137,15 @@ export default {
     },
     getVolume() {
       var newData = [];
-
       for (let i = 0; i < this.ochlv.length; i++) {
         newData.push({
           x: moment(this.ochlv[i].date, "YYYY-MM-DD").toDate(),
           y: this.ochlv[i].volume,
         });
       }
-
-      // console.log(newData);
-
       return newData;
     },
   },
-
 };
 </script>
 

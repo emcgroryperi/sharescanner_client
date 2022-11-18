@@ -1,5 +1,8 @@
 <template>
   <div>
+    <br />
+    <br />
+    <br />
     <div id="synced-charts" style="background-color: white;">
       <apexchart
         id="candle"
@@ -7,6 +10,14 @@
         height="360"
         :options="chartOptions"
         :series="series"
+      ></apexchart>
+      <apexchart
+        v-if="companyVolume.length != 0"
+        id="bar"
+        type="bar"
+        height="120"
+        :options="chartOptionsBar"
+        :series="seriesBar"
       ></apexchart>
     </div>
   </div>
@@ -19,7 +30,7 @@ import moment from "moment";
 export default {
   props: {
     companyData: Array,
-    companyVolume: Array,
+    companyVolume: {required: false, type: Array, default: () => []},
   },
 
   components: {

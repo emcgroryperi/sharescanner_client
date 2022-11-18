@@ -33,18 +33,18 @@
             class="mb-0 text-sm"
             style="text-align: center;"
           >No Filters Added</p>
-          <div class="table-responsive p-0 mytable mb-4" v-if="current_filters.length!=0">
+          <div class="table-responsive p-0 mytable mb-4">
             <table class="table align-items-center mb-0">
               <tbody>
                 <ul class="navbar-nav filtered">
                   <div v-for="filter in current_filters" :key="filter.id">{{filter.label}}</div>
-                  <material-button
-                    
+                </ul>
+                  <material-button 
+                    v-if="current_filters.length!=0"
                     color="success"
                     :fullWidth="true"
                     @click="clearFilters"
                   >Clear</material-button>
-                </ul>
               </tbody>
             </table>
           </div>
@@ -85,8 +85,10 @@ export default {
     addFilter(filter) {
       if (!this.current_filters.some((e) => e.key == filter.key)) {
         this.current_filters.push(filter);
-      }
-      console.log(this.current_filters);
+      } 
+      this.current_filters.forEach((element, i) => {
+        return element.key == filter.key ? this.current_filters[i] = filter : element
+      });
     },
     clearFilters() {
       this.current_filters = [];
@@ -107,7 +109,7 @@ export default {
             .then((data) => {
             this.crossovers = data.data;
             console.log(this.crossovers);
-            this.$emit('filter-complete', this.crossovers)
+            this.$emit('filter-complete', this.crossovers, this.current_filters)
           })})
           ;
     },

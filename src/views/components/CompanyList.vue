@@ -32,6 +32,7 @@ import MaterialButton from "@/components/MaterialButton";
 export default {
   props: {
     companies: { required: true, type: Array },
+    last_updated: String
   },
 
   data() {
@@ -40,7 +41,6 @@ export default {
       api_loaded: false,
       // companies: [],
       activeSymbol: "",
-      last_updated: "Loading...",
     };
   },
   components: {
@@ -52,7 +52,6 @@ export default {
     updateSelection(symbol) {
       this.activeSymbol = symbol;
       this.$emit("active-symbol", symbol);
-      console.log(this.activeSymbol);
     },
   },
 };
