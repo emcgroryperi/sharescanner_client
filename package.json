@@ -28,6 +28,7 @@
     "technicalindicators": "^3.1.0",
     "vue": "3.2.0",
     "vue-router": "4.0.14",
+    "vue-trading-view": "^1.0.1",
     "vue3-apexcharts": "^1.4.1",
     "vue3-loading-overlay": "^0.0.0",
     "vuex": "4.0.2"

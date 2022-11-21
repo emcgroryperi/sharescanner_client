@@ -40,22 +40,27 @@
                 <ul class="navbar-nav filtered">
                   <div v-for="filter in current_filters" :key="filter.id">{{filter.label}}</div>
                 </ul>
-                  <material-button 
-                    v-if="current_filters.length!=0"
-                    color="success"
-                    :fullWidth="true"
-                    @click="clearFilters"
-                  >Clear</material-button>
               </tbody>
             </table>
           </div>
-          <material-button
-            v-if="current_filters.length!=0"
-            color="success"
-            :fullWidth="true"
-            @click="applyFilters"
-          >Submit</material-button>
         </div>
+          <div class="filter_container">
+            <material-button
+              class="filter_button"
+              v-if="current_filters.length!=0"
+              color="success"
+              :fullWidth="true"
+              @click="clearFilters"
+            >Clear</material-button>
+          </div>
+          <div class="filter_container">
+            <material-button
+              v-if="current_filters.length!=0"
+              color="success"
+              :fullWidth="true"
+              @click="applyFilters"
+            >Submit</material-button>
+          </div>
       </div>
     </div>
     <div class="is-loading-bar has-text-centered" v-bind:class="{'is-loading': loading}">
@@ -69,9 +74,9 @@ import MaterialButton from "@/components/MaterialButton";
 import VolumeButton from "@/views/components/AnalysisButtons/VolumeButton";
 import EmaButton from "@/views/components/AnalysisButtons/EmaButton";
 // import BollingerButton from '@/views/components/AnalysisButtons/BollingerButton';
-import {HTTP} from '../../http-common.js';
-import Loading from 'vue3-loading-overlay';
-import 'vue3-loading-overlay/dist/vue3-loading-overlay.css';
+import { HTTP } from "../../http-common.js";
+import Loading from "vue3-loading-overlay";
+import "vue3-loading-overlay/dist/vue3-loading-overlay.css";
 
 export default {
   data() {
@@ -93,36 +98,47 @@ export default {
     addFilter(filter) {
       if (!this.current_filters.some((e) => e.key == filter.key)) {
         this.current_filters.push(filter);
-      } 
+      }
       this.current_filters.forEach((element, i) => {
-        return element.key == filter.key ? this.current_filters[i] = filter : element
+        return element.key == filter.key
+          ? (this.current_filters[i] = filter)
+          : element;
       });
     },
     clearFilters() {
       this.current_filters = [];
-      this.$emit('filter-cleared')
+      this.$emit("filter-cleared");
     },
     applyFilters() {
       console.log("requesting");
-      this.$emit('filter-cleared')
-      this.loading=true
-      HTTP.get('get_csrf_token/')
+      this.$emit("filter-cleared");
+      this.loading = true;
+      HTTP.get("get_csrf_token/")
         .then((response) => {
-            return response.data.token
-        }).then(token => {
-            HTTP.post("scan_market/", {indicators: this.current_filters}, {headers: {'X-CSRFToken': token}})
+          return response.data.token;
+        })
+        .then((token) => {
+          HTTP.post(
+            "scan_market/",
+            { indicators: this.current_filters },
+            { headers: { "X-CSRFToken": token } }
+          )
             .then((response) => {
-            console.log(response)
-            console.log("Companies retrieved");
-            return JSON.parse(response.data);
+              console.log(response);
+              console.log("Companies retrieved");
+              return JSON.parse(response.data);
             })
             .then((data) => {
-            this.crossovers = data.data;
-            console.log(this.crossovers);
-            this.loading=false
-            this.$emit('filter-complete', this.crossovers, this.current_filters)
-          })})
-          ;
+              this.crossovers = data.data;
+              console.log(this.crossovers);
+              this.loading = false;
+              this.$emit(
+                "filter-complete",
+                this.crossovers,
+                this.current_filters
+              );
+            });
+        });
     },
   },
 };
@@ -146,43 +162,9 @@ export default {
   padding-top: 10px;
 }
 
-.lds-dual-ring {
-  display: inline-block;
-  width: 80px;
-  height: 80px;
-}
-.lds-dual-ring:after {
-  content: " ";
-  display: block;
-  width: 64px;
-  height: 64px;
-  margin: 8px;
-  border-radius: 50%;
-  border: 6px;
-  border-color: #ccc transparent #ccc transparent;
-  animation: lds-dual-ring 1.2s linear infinite;
-}
 
-@keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+.filter_container {
+  padding-inline: 20px;
+  padding-bottom: 20px;
 }
-
-.is-loading-bar {
-  height: 0;
-  overflow: hidden;
-  
-  -webkit-transition: all 0.3s;
-  transition: all 0.3s;
-
-  &.is-loading {
-    height: 80px;
-  }
-  
-}
-
 </style>

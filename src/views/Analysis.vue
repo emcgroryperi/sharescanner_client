@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid py-4">
+  <div class="container-fluid py-4 mybackground">
     <div class="row">
       <filter-card 
         @filter-complete="(crossovers, filters) => selectCompanies(crossovers, filters)"

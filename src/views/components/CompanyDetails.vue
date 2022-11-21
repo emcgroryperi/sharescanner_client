@@ -6,16 +6,7 @@
       </div>
     </div>
     <slot></slot>
-    <br />
-    <candlestick-chart
-      v-if="render"
-      :key="symbol"
-      :companyData="plots"
-      :companyVolume="this.getVolume"
-    ></candlestick-chart>
-    <div class="card-body px-0 pb-2">
-      <p class="mb-0 text-sm" style="text-align: center;">Updated: {{ last_updated }}</p>
-    </div>
+    <candlestick-chart :symbol="symbol" :options="getOptions"></candlestick-chart>
   </div>
 </template>
 
@@ -23,7 +14,6 @@
 import { HTTP } from "../../http-common";
 import moment from "moment";
 import CandlestickChart from "@/views/components/CandlestickChart";
-import { get_SMA, get_BBands, get_EMA } from "@/views/../analysis.js";
 
 export default {
   name: "ChartHolderCard",
@@ -46,10 +36,14 @@ export default {
       plots: [],
     };
   },
+  created() {
+    this.getData()
+  },
 
-  // Fetches companies when created
-  mounted() {
-    this.getData();
+  watch: {
+    symbol() {
+      this.getData();
+    },
   },
 
   methods: {
@@ -64,49 +58,21 @@ export default {
             "ddd, ll"
           );
           this.exchange = response.data.company.exchange;
-          this.ochlv = response.data.data;
           this.render = true;
-          this.plots = [];
-          this.plots.push({
-            name: "candle",
-            type: "candlestick",
-            data: this.formatData,
-          });
           console.log("Data retrieved");
 
           if (this.filters && this.filters.length != 0) {
             console.log(this.filters);
-            for (const filter of this.filters) {
-              if (filter.filter == "EMA crossover") {
-                this.getEMA(filter.short_ema);
-                this.getEMA(filter.long_ema);
-              }
-            }
+            // for (const filter of this.filters) {
+            //   if (filter.filter == "EMA crossover") {
+            //   }
+            // }
           }
-          this.getBBands(20, 2);
         })
         .catch((e) => {
           console.log(e);
           this.errors.push(e);
         });
-    },
-    getSMA(period) {
-      get_SMA(this.formatData, period);
-      // this.plots.push(get_SMA(this.formatData, period));
-      // this.plots.push(get_SMA(this.formatData, 50));
-    },
-    getEMA(period) {
-      this.plots.push(get_EMA(this.formatData, period));
-    },
-    getBBands(period, std) {
-      this.plots.push(get_BBands(this.formatData, period, std).upper);
-      this.plots.push(get_BBands(this.formatData, period, std).lower);
-    },
-  },
-
-  watch: {
-    symbol: function () {
-      this.getData();
     },
   },
 
@@ -144,6 +110,44 @@ export default {
         });
       }
       return newData;
+    },
+    getTheme() {
+      console.log(this.$store.state.isDarkMode)
+      return 'dark'
+      // return this.$store.state.isDarkMode ? 'dark' : 'light'
+    },
+    getOptions() {
+      return {
+        symbol: this.chartSymbol,
+        interval: "D",
+        theme: this.getTheme,
+        studies: [
+          {
+            id: "MAExp@tv-basicstudies",
+            inputs: {
+              length: 10,
+            },
+          },
+          {
+            id: "MAExp@tv-basicstudies",
+            inputs: {
+              length: 20,
+            },
+          },
+          {
+            id: "MAExp@tv-basicstudies",
+            inputs: {
+              length: 50,
+            },
+          },
+          {
+          id: "BB@tv-basicstudies"
+          }
+        ],
+      };
+    },
+    chartSymbol() {
+      return "ASX:" + this.symbol.substr(0, this.symbol.indexOf("."));
     },
   },
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid py-4">
+  <div class="container-fluid py-4 mybackground">
     <div class="row">
       <div class="col-3">
         <company-list
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+
 import MaterialButton from "@/components/MaterialButton";
 import { HTTP } from "../http-common";
 import moment from "moment";
@@ -82,4 +83,8 @@ export default {
   overflow: auto;
   max-height: 50vh;
 }
+
+/* .mybackground {
+  height: 100%;
+} */
 </style>
