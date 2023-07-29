@@ -1,7 +1,7 @@
 FROM node:16.14.0
 
 # install simple http server for serving static content
-RUN npm i
+RUN npm i -g http-server
 
 # make the 'app' folder the current working directory
 WORKDIR /app
