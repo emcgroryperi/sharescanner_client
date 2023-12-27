@@ -1,6 +1,6 @@
 import axios from 'axios';
 
 export const HTTP = axios.create({
-  baseURL:  'http://' + process.env.VUE_APP_BACKEND_URL + '/api/' 
+  baseURL:  `http://192.168.86.248:9000/api/`
 })
 
