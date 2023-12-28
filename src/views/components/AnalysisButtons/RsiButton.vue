@@ -1,7 +1,7 @@
 <template>
   <div class="myrow">
     <div class="filter_label">
-      <h6 class="mb-0 text-sm">Bollinger Bands</h6>
+      <h6 class="mb-0 text-sm">RSI Thresholds</h6>
     </div>
     <div class="myfield"></div>
     <div class="mybutton">
@@ -23,9 +23,9 @@ export default {
   methods: {
     addFilter() {
       const obj = {
-        key: `bband`,
-        filter: "Bollinger Bands",
-        label: "Bollinger Bands",
+        key: `rsi`,
+        filter: "RSI Thresholds",
+        label: "RSI Thresholds",
       };
       console.log(obj);
       this.$emit("new-filter", obj);

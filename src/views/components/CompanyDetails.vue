@@ -142,6 +142,9 @@ export default {
           },
           {
           id: "BB@tv-basicstudies"
+          },
+          {
+          id: "RSI@tv-basicstudies"
           }
         ],
       };

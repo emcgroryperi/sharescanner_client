@@ -15,9 +15,12 @@
           <div class="newfilter">
             <ema-button @new-filter="(filter) => addFilter(filter)"></ema-button>
           </div>
-          <!-- <div>
-            <bollinger-button></bollinger-button>
-          </div>-->
+          <div class="newfilter">
+            <bollinger-button @new-filter="(filter) => addFilter(filter)"></bollinger-button>
+          </div>
+          <div class="newfilter">
+            <rsi-button @new-filter="(filter) => addFilter(filter)"></rsi-button>
+          </div>
         </div>
       </div>
     </div>
@@ -73,7 +76,8 @@
 import MaterialButton from "@/components/MaterialButton";
 import VolumeButton from "@/views/components/AnalysisButtons/VolumeButton";
 import EmaButton from "@/views/components/AnalysisButtons/EmaButton";
-// import BollingerButton from '@/views/components/AnalysisButtons/BollingerButton';
+import BollingerButton from '@/views/components/AnalysisButtons/BollingerButton';
+import RsiButton from '@/views/components/AnalysisButtons/RsiButton';
 import { HTTP } from "../../http-common.js";
 import Loading from "vue3-loading-overlay";
 import "vue3-loading-overlay/dist/vue3-loading-overlay.css";
@@ -91,7 +95,8 @@ export default {
     VolumeButton,
     EmaButton,
     Loading,
-    // BollingerButton
+    BollingerButton,
+    RsiButton
   },
 
   methods: {
